@@ -29,8 +29,8 @@ Pre-Install steps
 Before install, a local "app store" must be set up on a local machine
 
 For windows:
-- Install "Internet Information Services" (IIS) available in Windows additionnal softwares (Any Webserver showing files will work though, on MacOS you can just use "sudo python3 -m http.server 80" in the folder qour files are located in for example.
-- Download the jellyfin.xxx.zip and widdgetlist.xml
+- Install "Internet Information Services" (IIS) available in Windows additionnal softwares (Any Webserver showing files will work though, on MacOS you can just use "sudo python3 -m http.server 80", in the folder your files are located in, for example).
+- Download the Widgets and widdgetlist.xml
 - Copy files into your working directory
 - Make sure files are available, open a web browser and type: http://localhost/widgetlist.xml
 - Once everything is in place open a powershell, type ipconfig, or ipconfig getifaddr en0 on MacOS
