@@ -1,0 +1,70 @@
+Changelog — Jellyfin for Samsung Orsay OS (fork of upstream 2.2.6)
+====================================================================
+
+## 3.0.1-beta — all changes vs. upstream 2.2.6
+
+### Fixed
+- Server version check: versions were compared as strings, so servers on
+  Jellyfin 10.10+ were rejected as "too old" ("10.10.x" < "10.3.2" because
+  '1' < '3'). Replaced with a numeric per-segment comparison.
+  (ServerVersion.js)
+- Playback reporting: the JSON bodies for /Sessions/Playing[,/Progress,
+  /Stopped] were built by string concatenation without quotes around item
+  GUIDs and PlayMethod — invalid JSON that modern Jellyfin rejects with
+  HTTP 400. The server therefore never learned this TV's playback position
+  and resume was permanently broken. Bodies are now built with
+  JSON.stringify. (Server.js)
+- Seeking/resume landed at the wrong (old) position: the app sent no
+  PlaySessionId and never stopped its transcode job (the old stop call was
+  also D-series-only and used POST instead of DELETE), so Jellyfin matched
+  every seek/resume request against the still-running old job and re-served
+  its output from the old start point — while the OSD pretended the seek
+  had worked. Now: a fresh PlaySessionId per playback attempt and per seek,
+  PlaySessionId included in all playback reports, and active encodings are
+  killed (DELETE /Videos/ActiveEncodings) on stop, on seek and before
+  starting playback. (Server.js, GuiPlayer.js)
+- Transcoding picture corruption / aborted playback: the requested video
+  bitrate defaulted to 60 Mb/s — far above what these TVs can decode
+  (~30 Mb/s for E/F series per the app's own capability tables), corrupting
+  the lower half of the picture after a few minutes and aborting playback.
+  The transcode bitrate is now capped at the model's rated h264 limit, the
+  profile changed from high to baseline (avoids x264 weighted prediction, a
+  known decoder bug on these panels), and MaxFramerate=30 / MaxHeight=1080 /
+  MaxRefFrames=4 constraints were added. Default "Max Bitrate" setting
+  lowered from 60 to 20 Mb/s. (GuiPlayer_Transcoding.js, Server.js,
+  GuiPlayer_Versions.js, GuiPage_Settings.js)
+- Auto-subtitles in "Always" mode: a typo (subtitleindex vs subtitleIndex)
+  broke the fallback that picks any available text subtitle.
+  (GuiPlayer_Versions.js)
+- PlayMethod was left empty for audio-only transcodes and stream copies,
+  which made the player use direct-play time/seek handling on remuxed
+  streams (wrong position maths) and sent an invalid enum to the server.
+  Now DirectPlay / DirectStream / Transcode are set correctly and all
+  time/seek code branches on "not DirectPlay". (GuiPlayer.js)
+- Crash when an item had multiple media sources that all require full
+  transcoding (indexed into an empty array). (GuiPlayer_Versions.js)
+
+### Added
+- Auto-login: the last successfully logged-in user (with "Remember
+  Password" enabled) is logged in automatically on app start; an explicit
+  logout disables this until the next login. Previously auto-login only
+  worked for a "Default User" configured in the settings page.
+  (File.js, GuiUsers.js, GuiUsers_Manual.js, Support.js)
+- Player OSD key hints: "◀ −10s ▶ +30s • TOOLS or ▼: Menu (Subtitles /
+  Audio / Chapters / Position) • INFO: Details" — the fully functional
+  tools menu was undiscoverable before. (GuiPlayer_Display.js)
+- Technical stream info on the INFO key: video codec, resolution, fps,
+  bitrate, profile/level, audio codec/channels/language, container, and the
+  transcode target when transcoding. (GuiPlayer_Display.js)
+
+### Removed
+- Debug popups: alert "Key pressed", "hello / Network Status" notification,
+  and a leftover developer comment containing a private IP and user id.
+  (ServerVersion.js, Server.js, GuiPage_Music.js)
+
+### Known limitations
+- Playback speed cannot be changed: the Orsay SEF player only supports
+  soundless trick-play and the Jellyfin API has no server-side tempo
+  filter. Not implementable on this hardware.
+- Only text subtitles (SRT etc.) are supported; image-based subtitles
+  (PGS/VobSub) cannot be rendered by this app.
