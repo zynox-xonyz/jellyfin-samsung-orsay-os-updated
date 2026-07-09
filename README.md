@@ -1,5 +1,5 @@
-# Jellyfin for Samsung Smart TV with Orsay OS - mod
-This is a fork of the original version of Jellyfin for Samsung Smart TV produced before 2014 without andjusted server version checking, as well as removed leftover debug popups. Ships a drop-in .zip + widgetlist.xml.
+# Jellyfin for Samsung Smart TV with Orsay OS - Updated
+This is a fork of the original version of Jellyfin for Samsung Smart TV produced before 2014 with adjusted server version checking, multiple bug fixes, as well as removed leftover debug popups. Ships a drop-in .zip + widgetlist.xml.
 
 Not: You will have do adjust the IP in widgetlist.xml to your Host-IP.
 
@@ -8,6 +8,26 @@ Apps and OS updates are no more available but the system is still customizable u
 
 If your TV model is newer, it is probably using Tizen OS. 
 In this case you should use this software: https://github.com/jellyfin/jellyfin-tizen
+
+## What's fixed in this fork
+
+Compared to upstream 2.2.6, this fork fixes a number of bugs that broke playback with modern Jellyfin servers:
+
+- **Server version check** – newer servers (10.10+) were wrongly rejected as "too old" due to a broken string comparison.
+- **Resume/playback reporting** – malformed JSON meant the server never learned your playback position, so resume never worked.
+- **Seeking landed at the wrong position** – stale transcode jobs weren't stopped, so seeks/resumes silently replayed from the old start point.
+- **Transcoding picture corruption** – the default video bitrate (60 Mb/s) was far above what these TVs can decode, corrupting the picture after a few minutes. Bitrate limits, profile, and framerate/resolution caps are now set correctly per model.
+- **Auto-subtitles** – a typo broke the fallback that selects a text subtitle when "Always" mode was set.
+- **Wrong playback method handling** – audio-only transcodes and stream copies used the wrong seek/time logic.
+- **Crash on multi-source items** requiring full transcode.
+- Removed leftover **debug popups** and a developer comment containing a private IP.
+
+Also added: auto-login for the last logged-in user, and an on-screen key hint bar plus a technical stream-info panel (codec, resolution, bitrate, etc.) in the player.
+
+Full details in [CHANGELOG.md](CHANGELOG.md).
+
+**Known limitation:** playback speed cannot be changed — the Orsay SEF player only supports soundless trick-play and there's no server-side tempo filter to use instead.
+
 
 # Supported Devices
 Samsung TV's, Blu-ray Disk Players and Home Theatre Systems with older "Orsay" SmartHub operating system.
