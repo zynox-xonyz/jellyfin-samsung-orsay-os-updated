@@ -2,10 +2,52 @@
 <rsp stat="ok">
 <list>
 <widget id="Jellyfin">
-<title>Jellyfin</title>
-<compression type="zip" size="866889"/>
+<title>Jellyfin 3.0 BETA</title>
+<compression type="zip" size="869860"/>
 <description/>
-<download>http://192.168.1.26/Widgets/Jellyfin_2.2.6_Europe_20230928.zip</download>
+<download>http://192.168.2.113/Widgets/Jellyfin_Beta_3.0.1.zip</download>
+</widget>
+<widget id="JellyfinV230">
+<title>JF 230 VersionChk</title>
+<compression type="zip" size="866897"/>
+<description/>
+<download>http://192.168.2.113/Widgets/Jellyfin_v2.3.0.zip</download>
+</widget>
+<widget id="JellyfinV231">
+<title>JF 231 Transcode</title>
+<compression type="zip" size="867230"/>
+<description/>
+<download>http://192.168.2.113/Widgets/Jellyfin_v2.3.1.zip</download>
+</widget>
+<widget id="JellyfinV232">
+<title>JF 232 AutoLogin</title>
+<compression type="zip" size="867734"/>
+<description/>
+<download>http://192.168.2.113/Widgets/Jellyfin_v2.3.2.zip</download>
+</widget>
+<widget id="JellyfinV233">
+<title>JF 233 Subtitles</title>
+<compression type="zip" size="867882"/>
+<description/>
+<download>http://192.168.2.113/Widgets/Jellyfin_v2.3.3.zip</download>
+</widget>
+<widget id="JellyfinV234">
+<title>JF 234 StreamInfo</title>
+<compression type="zip" size="868553"/>
+<description/>
+<download>http://192.168.2.113/Widgets/Jellyfin_v2.3.4.zip</download>
+</widget>
+<widget id="JellyfinV235">
+<title>JF 235 SeekHint</title>
+<compression type="zip" size="868577"/>
+<description/>
+<download>http://192.168.2.113/Widgets/Jellyfin_v2.3.5.zip</download>
+</widget>
+<widget id="JellyfinV236">
+<title>JF 236 Resume</title>
+<compression type="zip" size="868953"/>
+<description/>
+<download>http://192.168.2.113/Widgets/Jellyfin_v2.3.6.zip</download>
 </widget>
 </list>
 </rsp>
